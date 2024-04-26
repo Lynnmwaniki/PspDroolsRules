@@ -1,0 +1,30 @@
+import com.drools.PspDroolsRules.model.User;
+global com.drools.PspDroolsRules.model.Deposit deposit;
+import org.apache.commons.codec.language.Soundex
+
+dialect "mvel"
+
+rule "Verify User Name"
+    when
+            user : User()
+            // Check for variations in name
+            eval(isSimilarName(user.getName(), "John Doe"))
+        then
+            System.out.println("User name is similar to John Doe: " + user.getName());
+end
+
+function boolean isSimilarName(String name1, String name2) {
+    // Normalize names (e.g., convert to lowercase and remove whitespace)
+    String normalizedName1 = name1.toLowerCase().replaceAll("\\s+", "");
+    String normalizedName2 = name2.toLowerCase().replaceAll("\\s+", "");
+
+    // Check if names are exactly the same
+    if (normalizedName1.equals(normalizedName2)) {
+        return true;
+    }
+
+    // Check for phonetic similarity (using Soundex algorithm)
+    Soundex soundex = new Soundex();
+    return soundex.encode(normalizedName1).equals(soundex.encode(normalizedName2));
+}
+
