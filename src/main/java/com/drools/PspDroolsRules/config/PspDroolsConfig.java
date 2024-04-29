@@ -8,7 +8,9 @@ import org.kie.api.runtime.KieContainer;
 import org.kie.internal.io.ResourceFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
+@EnableWebSecurity
 @Configuration
 public class PspDroolsConfig {
     private static final KieServices kieServices = KieServices.Factory.get(); //methods for creating and accessing various Drools components
