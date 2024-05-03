@@ -58,6 +58,11 @@
 			<version>${drools.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.kie</groupId>
+			<artifactId>kie-ci</artifactId>
+			<version>8.32.0.Final</version>
+		</dependency>
+		<dependency>
 			<groupId>org.drools</groupId>
 			<artifactId>drools-mvel</artifactId>
 			<version>${drools.version}</version>

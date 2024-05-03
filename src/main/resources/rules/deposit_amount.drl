@@ -28,3 +28,53 @@ function boolean isSimilarName(String name1, String name2) {
     return soundex.encode(normalizedName1).equals(soundex.encode(normalizedName2));
 }
 
+rule "Verify User Name"
+    when
+            user : User()
+            // Check for variations in name
+            eval(isSimilarName(user.getName(), "John Doe"))
+        then
+            user.setDepositAmount(500);
+end
+
+rule "Calculate Deposit Amount for High Risk Users"
+    when
+        user : User(riskLevel == "High")
+    then
+        double baseAmount = 1000;
+        double riskMultiplier = 1.5;
+        double depositAmount = baseAmount * riskMultiplier;
+        user.setDepositAmount(depositAmount);
+end
+
+rule "Calculate Deposit Amount for Low Risk Users"
+    when
+        user : User(riskLevel == "Low")
+    then
+        double baseAmount = 1000;
+        double riskMultiplier = 1.0;
+        double depositAmount = baseAmount * riskMultiplier;
+        applicant.setDepositAmount(depositAmount);
+end
+
+rule "Calculate Deposit Amount based on Credit Score"
+    when
+        user : User(creditScore > 700)
+    then
+        double baseAmount = 1500;
+        double creditScoreMultiplier = 0.02;
+        double depositAmount = baseAmount + (user.getCreditScore() * creditScoreMultiplier);
+        user.setDepositAmount(depositAmount);
+end
+
+rule "Apply Discount for Returning Customers"
+    when
+        user : user(isReturningCustomer == true)
+    then
+        double discount = 100;
+        double currentDepositAmount = user.getDepositAmount();
+        double discountedAmount = currentDepositAmount - discount;
+        if (discountedAmount >= 0) {
+            user.setDepositAmount(discountedAmount);
+        }
+end
